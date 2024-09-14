@@ -11,6 +11,11 @@ import { NewProduct } from "./Components/NewProduct";
 import { User } from "./Components/User";
 import { UserDetails } from "./Components/UserDetails";
 import { Admin } from "./Components/Admin";
+import { Profile } from "./Components/Profile";
+import { AuthProvider } from "./Components/auth";
+import { Login } from "./Components/Login";
+import { RequireAuth } from "./Components/RequireAuth";
+
 const LazyAbout = React.lazy(() => import("./Components/About"));
 
 function App() {
@@ -18,7 +23,7 @@ function App() {
   //userId can be a ID or string if it is string Router priortize the match router
   // else users/admin display UserDetails component when there is no admin comp
   return (
-    <>
+    <AuthProvider>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -41,8 +46,17 @@ function App() {
           <Route path=":userId" element={<UserDetails />} />
           <Route path="admin" element={<Admin />} />
         </Route>
+        <Route
+          path="profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route path="login" element={<Login />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 
